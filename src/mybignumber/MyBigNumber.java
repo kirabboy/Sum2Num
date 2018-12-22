@@ -1,41 +1,57 @@
 
 package mybignumber;
- 
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+/**
+ * Tác giả: Nguyễn Chính Hưng
+ * MyBigNumber là lớp để Cộng 2 số lớn bằng 2 chuỗi. 
+ * MyBigNumber là hàm để thực hiện phép cộng 2 chuỗi số
+ */
 public class MyBigNumber {
-    public IReceiver ireceiver;
+    
+    private IReceiver ireceiver;
    
-    public MyBigNumber(IReceiver ireceiver) {
+    public MyBigNumber(final IReceiver ireceiver) {
         this.ireceiver = ireceiver;
     }   
     
-    public String sum (final String s1,final String s2) {
-        String result="";
-        String step="";
-        int s1_length=s1.length();
-        int s2_length=s2.length();
-        final String pattern = "\\d+";
-        final boolean isError1;
-        final boolean isError2;
-        int temp=0;
-        int max=0;
-        int char1,char2;
-        int s=0;
-        int i;
+    /**
+     * Hàm sum là hàm thực hiện cộng 2 số
+     * 2 chuỗi này đều chỉ chứa các kí số từ '0' đến '9'.
+     *
+     * @param s1 chuỗi số thứ nhất.
+     * @param s2 chuỗi số thứ hai.
+     * @return chuỗi có giá trị là tổng của hai số s1 và s2.
+     */
+    public String sum(final String s1,final String s2) {
+        String result = "";//String contain the final result  
+        String step = ""; //String contain the step = 
+        int s1length = s1.length();//variable get a length of s1
+        int s2length = s2.length();//variable get a length of s2
+        final String pattern = "\\d+";//pattern
+        final boolean isError1;//erro1
+        final boolean isError2;//erro2
+        int temp = 0;// variable get memorize
+        int max = 0;//variable get  larger lengths
+        int char1;//variable get  number1
+        int char2;//variable get  number2
+        int s = 0;//variable get sum of number1 number 2 and temp
+        int i;//variable count
+        String blank = "";//String get blank to equal
         
-        //Kiểm tra dữ liệu nhập 
         try {
-        	//Kiểm tra xem người dùng đã nhập input 
-            if (s1.equals("")) {
+            if (s1.equals(blank)) {
                 this.ireceiver.send("Enter first number: ");
                 throw new NumberFormatException("Please enter the first number!!!");
             }
 
-            if (s2.equals("")) {
+            if (s2.equals(blank)) {
                 this.ireceiver.send("Enter second number: ");
                 throw new NumberFormatException("Please enter the second number!!!");
             }
            
-            //Kiểm tra có số âm hay không
             if (s1.charAt(0) == '-') {
                 this.ireceiver.send("Please enter the first number as a positive number: " + s1);
                 throw new NumberFormatException("Please enter the first number as a positive number: " + s1);
@@ -46,7 +62,6 @@ public class MyBigNumber {
                 throw new NumberFormatException("Please enter the first number as a positive number: " + s2);
             }
           
-            //Kiểm tra có ký tự đặc biệt hay không
             isError1 = s1.matches(pattern);
             isError2 = s2.matches(pattern);
 
@@ -61,48 +76,36 @@ public class MyBigNumber {
 
             }
         } catch (NumberFormatException e) {
-            System.out.println(e);
             
             return "error";
         }
         
-        //Lấy độ dài số lớn hơn
-        max = (s1_length>s2_length) ? s1_length : s2_length;
+        max = (s1length > s2length) ? s1length : s2length;
         
-        //Thực hiện cộng 2 
-        for( i = 0 ; i < max; i++){
-        	
-        	char1 = (s1_length-i-1 >= 0) ? (s1.charAt(s1_length-i-1)-'0') : 0;
-        	char2 = (s2_length-i-1 >= 0) ? (s2.charAt(s2_length-i-1)-'0') : 0;
-        	
-        	s 	= char1+char2+ temp;
-        	result 	= (s % 10) + result;
-
-        	// In ra các bước tính 
-        	step = " Step " + (i + 1) + ":\n "
-        			+ char1 + " + " + char2 + " = " + (s - temp)+ " ; "
-        			+ (s-temp) + " + " + temp + " = " + s
-        			+ "; Wirte " + s % 10 + " memorize " + s / 10 
-        			+ " .result: "+result + ".\n";
-     
-        	temp = s/10;
+        for (i = 0 ; i < max; i++) {
+            char1 = (s1length - i - 1 >= 0) ? (s1.charAt(s1length - i - 1) - '0') : 0;
+            char2 = (s2length - i - 1 >= 0) ? (s2.charAt(s2length - i - 1) - '0') : 0;
+            s = char1 + char2 + temp;
+            result = (s % 10) + result;
+            step = " Step " + (i + 1) + ":\n "
+                + char1 + " + " + char2 + " = " + (s - temp) + " ; "
+                + (s - temp) + " + " + temp + " = " + s
+                + "; Wirte " + s % 10 + " memorize " + s / 10 
+                + " .result: " + result + ".\n";
+            
+            temp = s / 10;
 
             this.ireceiver.send(step);
         }
-        //Nếu nhớ>0 thì in ra bước này và cộng thêm vào kết quả
-        if(temp > 0){
-        	step="Step " +(i+2) +":\n" + 0 + " + " + 0 + temp + " = " + 1+ ".\n" ;
+        
+        if (temp > 0) {
+            step = "Step " + (i + 2) + ":\n" + 0 + " + " + 0 + temp + " = " + 1 + ".\n" ;
             result = temp + result;
             this.ireceiver.send(step);
         }
-        step="result: "+result + "\n";
+        step = "result: " + result + "\n";
         this.ireceiver.send(step);
         
         return result;
     }
 }
-
-
-
-
-
