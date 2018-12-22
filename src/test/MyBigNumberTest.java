@@ -14,7 +14,7 @@ public class MyBigNumberTest {
     }
     
      @Test
-     public void test1() throws Exception 
+     public void test1()
      {
          MyBigNumber mybignumber = new MyBigNumber();
          String str = mybignumber.sum("123123", "321");
@@ -23,7 +23,7 @@ public class MyBigNumberTest {
      }
      
      @Test
-     public void test2() throws Exception 
+     public void test2()
      {
          MyBigNumber mybignumber = new MyBigNumber();
          String str = mybignumber.sum("123123", "0");
@@ -34,7 +34,7 @@ public class MyBigNumberTest {
 
      
      @Test
-     public void test3() throws Exception 
+     public void test3()
      {
          MyBigNumber mybignumber = new MyBigNumber();
          String str = mybignumber.sum("0", "0");
@@ -43,7 +43,7 @@ public class MyBigNumberTest {
      }
      
      @Test
-     public void test4() throws Exception 
+     public void test4()
      {
          MyBigNumber mybignumber = new MyBigNumber();
          String str = mybignumber.sum("/", "???");
