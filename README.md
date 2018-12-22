@@ -1,4 +1,4 @@
-MyBigNumber
+
 Project by Eclipse
 Can be compile in Console :
 1. Open cmd and dir into this folder
